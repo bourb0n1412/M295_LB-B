@@ -1,0 +1,37 @@
+[
+  {
+    "Titel": "Projektplan erstellen",
+    "Beschreibung": "Erstellen eines detaillierten Projektplans für das neue Produkt.",
+    "DueDate": "2024-06-20",
+    "ResolvedDate": null,
+    "id": 1
+  },
+  {
+    "Titel": "Team-Meeting",
+    "Beschreibung": "Wöchentliches Team-Meeting zur Besprechung des Fortschritts und der nächsten Schritte.",
+    "DueDate": "2024-06-14",
+    "ResolvedDate": "2024-06-14",
+    "id": 2
+  },
+  {
+    "Titel": "Kundenfeedback analysieren",
+    "Beschreibung": "Analyse des Kundenfeedbacks zur Verbesserung des Produkts.",
+    "DueDate": "2024-06-25",
+    "ResolvedDate": null,
+    "id": 3
+  },
+  {
+    "Titel": "Marketingkampagne planen",
+    "Beschreibung": "Planung und Vorbereitung der nächsten Marketingkampagne.",
+    "DueDate": "2024-06-30",
+    "ResolvedDate": null,
+    "id": 4
+  },
+  {
+    "Titel": "Website-Update",
+    "Beschreibung": "Durchführen der notwendigen Updates auf der Firmenwebsite.",
+    "DueDate": "2024-06-18",
+    "ResolvedDate": "2024-06-18",
+    "id": 5
+  }
+]
