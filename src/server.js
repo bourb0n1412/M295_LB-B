@@ -14,7 +14,7 @@ app.use(session({
 
 // Auth Controller
 // http://expressjs.com/de/api.html#res.cookie
-// POST /login Endpunkt, welcher die Credentials entgegennimmt, überprüft und ein Token oder Cookie zurück gibt
+// Endpunkt, welcher die Credentials entgegennimmt, überprüft und ein Cookie zurück gibt (http://expressjs.com/de/api.html#res.cookie)
 app.post('/login', (req, res) => {
     const email = req.headers.email;
     const password = req.headers.password;
@@ -33,7 +33,7 @@ app.post('/login', (req, res) => {
     }
 });
 
-// GET /verify Endpunkt, welcher ein Token oder Cookie auf Gültigkeit überprüft und das Ergebnis zurück gibt
+// Endpunkt, welcher das Cookie auf Gültigkeit überprüft und das Ergebnis zurück gibt
 app.get('/verify', (req, res) => {
     if (req.session.auth) {
         res.status(200).json({
@@ -48,7 +48,7 @@ app.get('/verify', (req, res) => {
     }
 });
 
-// DELETE /logout Endpunkt, welcher das mitgegeben Token oder Cookie als ungültig markiert
+// Endpunkt, welcher das mitgegebene Cookie als ungültig markiert
 app.delete('/logout', (req, res) => {
     req.session.auth
     req.session.auth = false
@@ -59,7 +59,7 @@ app.delete('/logout', (req, res) => {
 
 
 // Task Controller
-// GET /tasks Endpunkt, welcher eine Liste aller Tasks zurück gibt
+// Endpunkt, welcher eine Liste aller Tasks zurück gibt
 app.get('/tasks', (req, res) => {
     if (req.session.auth) {
         res.status(200).json(tasks)
@@ -70,7 +70,7 @@ app.get('/tasks', (req, res) => {
     }
 });
 
-// POST /tasks Endpunkt, welcher einen neuen Task erstellt und diesen zurück gibt
+// Endpunkt, welcher einen neuen Task erstellt und diesen zurück gibt
 app.post('/tasks', (req, res) => {
     if (req.session.auth) {
         const newTask = req.body;
@@ -89,7 +89,7 @@ app.post('/tasks', (req, res) => {
 });
 
 
-// GET /task/{id} Endpunkt, welcher einen einzelnen Task zurück gibt
+// Endpunkt, welcher einen einzelnen Task zurück gibt
 app.get('/tasks/:id', (req, res) => {
     const id = req.params.id;
     const findTask = tasks.find(findTask => findTask.id === parseInt(id));
@@ -106,7 +106,7 @@ app.get('/tasks/:id', (req, res) => {
     }
 });
 
-// PUT /task/{id} Endpunkt, welcher den bestehenden Task verändert und diesen zurück gibt
+// Endpunkt, welcher den bestehenden Task verändert und diesen zurück gibt
 app.patch('/tasks/:id', (req, res) => {
     const id = req.params.id
     const taskToUpdate = req.body
@@ -128,7 +128,7 @@ app.patch('/tasks/:id', (req, res) => {
     }
 });
 
-// DELETE /task/{id} Endpunkt, welcher den bestehenden Task löscht
+// Endpunkt, welcher den bestehenden Task löscht
 app.delete('/tasks/:id', (req, res) => {
     const id = req.params.id
     const findTask = tasks.find(findTask => findTask.id === parseInt(id))
