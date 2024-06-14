@@ -1,5 +1,4 @@
 # M295_LB-B
-## Autor: Heiko Ho
 ## Zweck: Funktionstüchtiges Backend für die Leistungsbeurteilung B im Modul 295.
 
 ## Technologien
