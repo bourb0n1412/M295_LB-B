@@ -21,7 +21,7 @@ app.post('/login', (req, res) => {
     if (password === "m295") {
         req.session.auth = true
         res.cookie('auth', true, { httpOnly: true })
-        res.status(200).json({
+        res.status(201).json({
             authenticated: req.session.auth,
             message: 'Login successful'
         });
@@ -75,8 +75,12 @@ app.post('/tasks', (req, res) => {
     if (req.session.auth) {
         const newTask = req.body;
         newTask.Id = tasks.length + 1
-        tasks.push(newTask);
-        res.status(201).json(newTask)
+        if (newTask.Titel === "") {
+            return res.status(400).json({ message: 'Task-Titel darf nicht leer sein' })
+        } else {
+            tasks.push(newTask);
+            res.status(201).json(newTask)
+        }
     } else {
         res.status(403).json({
             message: "You don't have permsissions"
@@ -106,19 +110,21 @@ app.get('/tasks/:id', (req, res) => {
 app.patch('/tasks/:id', (req, res) => {
     const id = req.params.id
     const taskToUpdate = req.body
-    const findTask = tasks.find(findTask => findTask.id === parseInt(id))
+    const findTask = tasks.find(task => task.id === parseInt(id))
     if (req.session.auth) {
+        if (taskToUpdate.Titel === "") {
+            return res.status(400).json({ message: 'Task-Titel darf nicht leer sein' })
+        }
         if (findTask) {
-            tasks.splice(findTask, 1, taskToUpdate)
-            tasks.push(taskToUpdate)
-            res.status(200).json(taskToUpdate)
+            tasks.splice(findTask, 1, taskToUpdate);
+            res.status(200).json(taskToUpdate);
         } else {
-            return res.sendStatus(404)
+            res.status(404).json({ message: `Task mit ID ${id} nicht gefunden` })
         }
     } else {
         res.status(403).json({
-            message: "You don't have permsissions"
-        })
+            message: "You don't have Permissions"
+        });
     }
 });
 
