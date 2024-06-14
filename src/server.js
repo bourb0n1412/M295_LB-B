@@ -1,6 +1,8 @@
 // QUELLEN:
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch?retiredLocale=de
 // http://expressjs.com/de/api.html#res.cookie
+// http://expressjs.com/en/guide/using-middleware.html
+
 
 const express = require('express');
 const session = require('express-session');
@@ -37,27 +39,36 @@ app.post('/login', (req, res) => {
         }
     } catch (err) {
         console.error(err);
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             message: 'Internal server error'
-        });
+        })
     }
 
 });
 
 // Endpunkt, welcher das Cookie auf Gültigkeit überprüft und das Ergebnis zurück gibt
 app.get('/verify', (req, res) => {
-    if (req.session.auth) {
-        res.status(200).json({
-            authenticated: true,
-            message: 'Cookie is valid'
-        })
-    } else {
-        res.status(401).json({
-            authenticated: false,
-            message: 'Cookie is invalid'
-        })
+    try {
+        if (req.session.auth) {
+            res.status(200).json({
+                authenticated: true,
+                message: 'Cookie is valid'
+            })
+        } else {
+            res.status(401).json({
+                authenticated: false,
+                message: 'Cookie is invalid'
+            })
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
     }
+
 });
 
 // Endpunkt, welcher das mitgegebene Cookie als ungültig markiert
@@ -69,15 +80,13 @@ app.delete('/logout', (req, res) => {
         res.status(204)
     } catch (err) {
         console.error(err);
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             message: 'Internal server error'
         });
     }
 
 })
-
-
 
 // Task Controller
 // Endpunkt, welcher eine Liste aller Tasks zurück gibt
@@ -92,7 +101,7 @@ app.get('/tasks', (req, res) => {
         }
     } catch (err) {
         console.error(err);
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             message: 'Internal server error'
         });
@@ -107,7 +116,7 @@ app.post('/tasks', (req, res) => {
             const newTask = req.body;
             newTask.Id = tasks.length + 1
             if (newTask.Titel === "") {
-                return res.status(400).json({ message: 'Task-Titel darf nicht leer sein' })
+                res.status(400).json({ message: 'Task-Titel darf nicht leer sein' })
             } else {
                 tasks.push(newTask);
                 res.status(201).json(newTask)
@@ -119,7 +128,7 @@ app.post('/tasks', (req, res) => {
         }
     } catch (err) {
         console.error(err);
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             message: 'Internal server error'
         });
@@ -146,7 +155,7 @@ app.get('/tasks/:id', (req, res) => {
         }
     } catch (err) {
         console.error(err);
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             message: 'Internal server error'
         });
@@ -162,7 +171,7 @@ app.patch('/tasks/:id', (req, res) => {
         const findTask = tasks.find(task => task.id === parseInt(id))
         if (req.session.auth) {
             if (taskToUpdate.Titel === "") {
-                return res.status(400).json({ message: 'Task-Titel darf nicht leer sein' })
+                res.status(400).json({ message: 'Task-Titel darf nicht leer sein' })
             }
             if (findTask) {
                 tasks.splice(findTask, 1, taskToUpdate);
@@ -177,7 +186,7 @@ app.patch('/tasks/:id', (req, res) => {
         }
     } catch (err) {
         console.error(err);
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             message: 'Internal server error'
         });
@@ -205,7 +214,7 @@ app.delete('/tasks/:id', (req, res) => {
     }
     catch (err) {
         console.error(err);
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             message: 'Internal server error'
         });
@@ -215,7 +224,7 @@ app.delete('/tasks/:id', (req, res) => {
 // Abfangen von Anfragen an nicht existierende Endpunkte
 app.use((req, res) => {
     if (!['/login', '/verify', '/logout', '/tasks', '/tasks/:id']) {
-        return res.status(404).json({ message: 'Endpoint not found' });
+        res.status(404).json({ message: 'Endpoint not found' });
     }
 });
 
